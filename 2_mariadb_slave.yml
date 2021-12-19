@@ -1,0 +1,31 @@
+
+version: '3.0'
+services:
+  db_master:
+    image: mariadb:10.5
+    container_name: mariadb_slave
+    environment:
+      MYSQL_ROOT_PASSWORD: CGV1YIBI4DG3H7KCSCFA
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: yc
+      MYSQL_PASSWORD: 123456
+    volumes:
+      # conf
+      - "./volumes/2_slave/conf.d:/etc/mysql/conf.d"
+      # data
+      - "./volumes/2_slave/data:/var/lib/mysql"
+      # log
+      - "./volumes/2_slave/log:/var/log/mysql" 
+    ports:
+      - 33007:3306
+
+# 因為在同一個資料夾需要 -p
+# docker-compose -f 2_mariadb_slave.yml -p 2_mariadb_slave up -d
+# docker-compose -f 2_mariadb_slave.yml -p 2_mariadb_slave down
+
+# docker exec -it mariadb_slave bash
+# mysql -uroot -pCGV1YIBI4DG3H7KCSCFA
+# show databases;
+# use mydb;
+# show tables;
+# exit

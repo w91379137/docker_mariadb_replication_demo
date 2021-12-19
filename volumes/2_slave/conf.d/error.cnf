@@ -1,0 +1,5 @@
+
+[mariadb]
+log_error = /var/log/mysql/error.log
+
+# https://mariadb.com/kb/en/error-log/
