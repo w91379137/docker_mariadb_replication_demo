@@ -3,7 +3,7 @@ version: '3.0'
 services:
   db_master:
     image: mariadb:10.5
-    container_name: mariadb_master
+    container_name: mariadb_slave
     environment:
       MYSQL_ROOT_PASSWORD: CGV1YIBI4DG3H7KCSCFA
       MYSQL_DATABASE: mydb
@@ -11,19 +11,19 @@ services:
       MYSQL_PASSWORD: 123456
     volumes:
       # conf
-      - "./volumes/1_master/conf.d:/etc/mysql/conf.d"
+      - "./volumes/slave/conf.d:/etc/mysql/conf.d"
       # data
-      - "./volumes/1_master/data:/var/lib/mysql"
+      - "./volumes/slave/data:/var/lib/mysql"
       # log
-      - "./volumes/1_master/log:/var/log/mysql" 
+      - "./volumes/slave/log:/var/log/mysql" 
     ports:
-      - 33006:3306
+      - 33007:3306
 
 # 因為在同一個資料夾需要 -p
-# docker-compose -f 1_mariadb_master.yml -p 1_mariadb_master up -d
-# docker-compose -f 1_mariadb_master.yml -p 1_mariadb_master down
+# docker-compose -f mariadb_slave.yml -p mariadb_slave up -d
+# docker-compose -f mariadb_slave.yml -p mariadb_slave down
 
-# docker exec -it mariadb_master bash
+# docker exec -it mariadb_slave bash
 # mysql -uroot -pCGV1YIBI4DG3H7KCSCFA
 # show databases;
 # use mydb;
