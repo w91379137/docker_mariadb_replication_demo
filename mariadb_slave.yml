@@ -31,7 +31,7 @@ networks:
 # docker-compose -f mariadb_slave.yml -p mariadb_slave down
 
 # docker exec -it mariadb_slave bash
-## mysql -uroot -pCGV1YIBI4DG3H7KCSCFA
+## mysql -pCGV1YIBI4DG3H7KCSCFA
 
 ### show databases;
 ### use mydb;
