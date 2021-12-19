@@ -39,9 +39,11 @@ show slave status\G;
 注意其中的
 Slave_IO_Running: Yes
 Slave_SQL_Running: Yes
-Master_SSL_Verify_Server_Cert: No
-Last_IO_Errno: 2005
-Last_IO_Error: error connecting to master 'root@mariadb_master:3306' - retry-time: 60  maximum-retries: 86400  message: Unknown server host 'mariadb_master' (-2)
+
+Exec_Master_Log_Pos: 343
+
+Last_IO_Errno: 0
+Last_IO_Error: 
 
 5 [master]建立資料
 
@@ -49,7 +51,15 @@ show databases;
 use mydb;
 show tables;
 create table if not exists test(
-    id INT NOT NULL PRIMARY KEY,
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 show tables;
+insert into test () VALUES ();
+select * from test;
+
+6 [slave]查詢同步資料
+
+use mydb;
+show tables;
+select * from test;
