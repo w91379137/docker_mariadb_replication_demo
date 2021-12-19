@@ -18,14 +18,27 @@ services:
       - "./volumes/slave/log:/var/log/mysql" 
     ports:
       - 33007:3306
+    networks: 
+      - workNetwork
+      
+networks:
+ workNetwork:
+  external:
+   name: myNetwork 
 
 # 因為在同一個資料夾需要 -p
 # docker-compose -f mariadb_slave.yml -p mariadb_slave up -d
 # docker-compose -f mariadb_slave.yml -p mariadb_slave down
 
 # docker exec -it mariadb_slave bash
-# mysql -uroot -pCGV1YIBI4DG3H7KCSCFA
-# show databases;
-# use mydb;
-# show tables;
+## mysql -uroot -pCGV1YIBI4DG3H7KCSCFA
+
+### show databases;
+### use mydb;
+### show tables;
+
+### select @@server_id;
+
+## exit
+
 # exit

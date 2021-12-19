@@ -18,14 +18,27 @@ services:
       - "./volumes/master/log:/var/log/mysql" 
     ports:
       - 33006:3306
+    networks: 
+      - workNetwork
+      
+networks:
+ workNetwork:
+  external:
+   name: myNetwork 
 
 # 因為在同一個資料夾需要 -p
 # docker-compose -f mariadb_master.yml -p mariadb_master up -d
 # docker-compose -f mariadb_master.yml -p mariadb_master down
 
 # docker exec -it mariadb_master bash
-# mysql -uroot -pCGV1YIBI4DG3H7KCSCFA
-# show databases;
-# use mydb;
-# show tables;
+## mysql -uroot -pCGV1YIBI4DG3H7KCSCFA
+
+### show databases;
+### use mydb;
+### show tables;
+
+### select @@server_id;
+
+## exit
+
 # exit
