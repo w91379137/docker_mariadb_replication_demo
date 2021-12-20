@@ -6,7 +6,9 @@ bind-address = 0.0.0.0
 sync_binlog = 1
 log-bin = /var/log/mysql/master-log
 skip_name_resolve = ON
-# binlog_do_db = mydb
 
 max_binlog_size = 100M # binlog檔案最大容量
 relay-log = /var/log/mysql/slave-log
+
+replicate-do-db = mydb
+replicate_wild_do_table = mydb.test%
