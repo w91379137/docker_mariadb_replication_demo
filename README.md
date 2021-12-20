@@ -26,7 +26,7 @@ show master status;
 +-------------------+----------+--------------+------------------+
 | File              | Position | Binlog_Do_DB | Binlog_Ignore_DB |
 +-------------------+----------+--------------+------------------+
-| master-log.000003 |      343 |              |                  |
+| master-log.000003 |      343 | mydb         |                  |
 +-------------------+----------+--------------+------------------+
 ```
 
@@ -51,6 +51,10 @@ show slave status\G;
 Slave_IO_Running: Yes
 Slave_SQL_Running: Yes
 ...
+Replicate_Do_DB: mydb
+...
+Replicate_Wild_Do_Table: mydb.test%
+...
 Exec_Master_Log_Pos: 343
 ...
 Last_IO_Errno: 0
@@ -59,10 +63,10 @@ Last_IO_Error:
 
 - ## 5 [master]建立資料
 
+建立會同步的表
 ```
 show databases;
 use mydb;
-show tables;
 create table if not exists test(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -70,6 +74,17 @@ create table if not exists test(
 show tables;
 insert into test () VALUES ();
 select * from test;
+```
+建立不同步的表
+```
+use mydb;
+create table if not exists xtest(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+show tables;
+insert into xtest () VALUES ();
+select * from xtest;
 ```
 
 - ## 6 [slave]查詢同步資料
