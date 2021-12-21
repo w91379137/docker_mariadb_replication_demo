@@ -3,12 +3,17 @@
 server-id = 2
 bind-address = 0.0.0.0
 
+auto_increment_offset = 2
+auto_increment_increment = 2
+
 sync_binlog = 1
 log-bin = /var/log/mysql/master-log
-skip_name_resolve = ON
-
-max_binlog_size = 100M # binlog檔案最大容量
 relay-log = /var/log/mysql/slave-log
 
+log-slave-updates = 1
+skip_name_resolve = ON
+max_binlog_size = 100M # binlog檔案最大容量
+
+binlog-do-db = mydb
 replicate-do-db = mydb
 replicate_wild_do_table = mydb.test%

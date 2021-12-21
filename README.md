@@ -16,13 +16,23 @@
 ./2_stop.sh
 ```
 
-- ## 2 [master]查詢同步位置
-
+- ## 2 查詢同步位置
+查第1台
 ```
 docker exec -it mariadb_master bash
 mysql -pCGV1YIBI4DG3H7KCSCFA
 show master status;
-
++-------------------+----------+--------------+------------------+
+| File              | Position | Binlog_Do_DB | Binlog_Ignore_DB |
++-------------------+----------+--------------+------------------+
+| master-log.000003 |      343 | mydb         |                  |
++-------------------+----------+--------------+------------------+
+```
+查第2台
+```
+docker exec -it mariadb_slave bash
+mysql -pCGV1YIBI4DG3H7KCSCFA
+show master status;
 +-------------------+----------+--------------+------------------+
 | File              | Position | Binlog_Do_DB | Binlog_Ignore_DB |
 +-------------------+----------+--------------+------------------+
@@ -30,18 +40,21 @@ show master status;
 +-------------------+----------+--------------+------------------+
 ```
 
-- ## 3 [slave]設定同步位置且同步
 
+- ## 3 設定同步位置且同步
+第1台
 ```
-docker exec -it mariadb_slave bash
-mysql -pCGV1YIBI4DG3H7KCSCFA
-
+CHANGE MASTER TO MASTER_HOST='mariadb_slave', MASTER_USER='root', MASTER_PASSWORD='CGV1YIBI4DG3H7KCSCFA', MASTER_PORT=3306, MASTER_LOG_FILE='master-log.000003', MASTER_LOG_POS=343;
+start slave;
+```
+第2台
+```
 CHANGE MASTER TO MASTER_HOST='mariadb_master', MASTER_USER='root', MASTER_PASSWORD='CGV1YIBI4DG3H7KCSCFA', MASTER_PORT=3306, MASTER_LOG_FILE='master-log.000003', MASTER_LOG_POS=343;
 start slave;
 ```
+- ## 4 檢查同步狀態
 
-- ## 4 [slave]檢查同步狀態
-
+第12台
 ```
 show slave status\G;
 ```
@@ -72,7 +85,8 @@ create table if not exists test(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 show tables;
-insert into test () VALUES ();
+insert into test () VALUES (); #1
+insert into test () VALUES (); #3
 select * from test;
 ```
 建立不同步的表
@@ -83,7 +97,8 @@ create table if not exists xtest(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 show tables;
-insert into xtest () VALUES ();
+insert into xtest () VALUES (); #1
+insert into xtest () VALUES (); #3
 select * from xtest;
 ```
 
@@ -92,5 +107,9 @@ select * from xtest;
 ```
 use mydb;
 show tables;
+select * from test;
+
+insert into test () VALUES (); #4
+insert into test () VALUES (); #6
 select * from test;
 ```
